@@ -1,7 +1,15 @@
+/**
+ * @fileoverview TodoItem component.
+ * Represents an individual todo item.
+ * Handles editing, deleting, and toggling completion of a single todo.
+ */
+
 import { LitElement, html, css } from 'lit';
 
 /**
- * TodoItem - Individual todo item component
+ * Represents a single todo item in the list.
+ * Provides UI and functionality for editing, deleting, and toggling completion.
+ * @extends {LitElement}
  */
 export class TodoItem extends LitElement {
   static properties = {
@@ -13,6 +21,14 @@ export class TodoItem extends LitElement {
   static styles = css`
     :host {
       display: block;
+      --editbutton-bg: #4CAF50;
+      --editbutton-bg-hover: #45a049;
+      --deletebutton-bg: #f44336;
+      --deletebutton-bg-hover: #da190b;
+      --savebutton-bg: #2196F3;
+      --savebutton-bg-hover: #0b7dda;
+      --cancelbutton-bg: #757575;
+      --cancelbutton-bg-hover: #616161;
     }
 
     .todo-item {
@@ -73,48 +89,56 @@ export class TodoItem extends LitElement {
     }
 
     .edit-btn {
-      background: #4CAF50;
+      background: var(--editbutton-bg);
       color: white;
     }
 
     .edit-btn:hover {
-      background: #45a049;
+      background: var(--editbutton-bg-hover);
     }
 
     .delete-btn {
-      background: #f44336;
+      background: var(--deletebutton-bg);
       color: white;
     }
 
     .delete-btn:hover {
-      background: #da190b;
+      background: var(--deletebutton-bg-hover);
     }
 
     .save-btn {
-      background: #2196F3;
+      background: var(--savebutton-bg);
       color: white;
     }
 
     .save-btn:hover {
-      background: #0b7dda;
+      background: var(--savebutton-bg-hover);
     }
 
     .cancel-btn {
-      background: #757575;
+      background: var(--cancelbutton-bg);
       color: white;
     }
 
     .cancel-btn:hover {
-      background: #616161;
+      background: var(--cancelbutton-bg-hover);
     }
   `;
 
+  /**
+   * Initializes the todo item.
+   * @constructor
+   */
   constructor() {
     super();
     this.isEditing = false;
     this.editValue = '';
   }
 
+  /**
+   * Toggles the completion state of the todo.
+   * @fires TodoItem#toggle-todo
+   */
   handleToggle() {
     this.dispatchEvent(new CustomEvent('toggle-todo', {
       detail: { id: this.todo.id },
@@ -123,6 +147,10 @@ export class TodoItem extends LitElement {
     }));
   }
 
+  /**
+   * Deletes the todo after user confirmation.
+   * @fires TodoItem#delete-todo
+   */
   handleDelete() {
     if (confirm('Delete this todo?')) {
       this.dispatchEvent(new CustomEvent('delete-todo', {
@@ -133,11 +161,18 @@ export class TodoItem extends LitElement {
     }
   }
 
+  /**
+   * Puts the todo into edit mode and sets the edit input value.
+   */
   handleEdit() {
     this.isEditing = true;
     this.editValue = this.todo.text;
   }
 
+  /**
+   * Saves the edited todo and exits edit mode.
+   * @fires TodoItem#update-todo
+   */
   handleSave() {
     if (this.editValue.trim()) {
       this.dispatchEvent(new CustomEvent('update-todo', {
@@ -149,11 +184,19 @@ export class TodoItem extends LitElement {
     }
   }
 
+  /**
+   * Cancels editing and resets the input value.
+   */
   handleCancel() {
     this.isEditing = false;
     this.editValue = '';
   }
 
+  /**
+   * Handles keyboard events while editing.
+   * Enter saves the todo; Escape cancels editing.
+   * @param {KeyboardEvent} e
+   */
   handleKeyDown(e) {
     if (e.key === 'Enter') {
       this.handleSave();
@@ -162,6 +205,10 @@ export class TodoItem extends LitElement {
     }
   }
 
+  /**
+   * Renders the todo item template.
+   * @returns {import('lit').TemplateResult}
+   */
   render() {
     if (this.isEditing) {
       return html`
@@ -214,4 +261,5 @@ export class TodoItem extends LitElement {
   }
 }
 
+// Define the custom element
 customElements.define('todo-item', TodoItem);

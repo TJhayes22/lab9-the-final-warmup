@@ -1,6 +1,11 @@
 /**
- * TodoModel - Manages the todo list data and business logic
- * Implements the Observer pattern for reactive updates
+ * @fileoverview TodoModel manages the todo list data and business logic.
+ * Implements the Observer pattern to allow reactive updates for UI components.
+ */
+
+/**
+ * Manages a collection of todos, including CRUD operations and state persistence.
+ * Notifies subscribers whenever the list changes.
  */
 export class TodoModel {
   constructor(storageService) {
@@ -11,21 +16,26 @@ export class TodoModel {
   }
 
   /**
-   * Subscribe to model changes
+   * Subscribe to model changes.
+   * The listener will be called whenever the todo list changes.
+   * @param {Function} listener Callback function to invoke on changes
    */
   subscribe(listener) {
     this.listeners.push(listener);
   }
 
   /**
-   * Notify all subscribers of changes
+   * Notify all subscribers of changes to the todo list.
+   * @private
    */
   notify() {
     this.listeners.forEach(listener => listener());
   }
 
   /**
-   * Add a new todo
+   * Add a new todo item.
+   * Ignores empty or whitespace-only strings.
+   * @param {string} text The text of the new todo
    */
   addTodo(text) {
     if (!text || text.trim() === '') {
@@ -45,7 +55,8 @@ export class TodoModel {
   }
 
   /**
-   * Toggle todo completion status
+   * Toggle completion status of a todo by its ID.
+   * @param {number} id The unique ID of the todo to toggle
    */
   toggleComplete(id) {
     const todo = this.todos.find(t => t.id === id);
@@ -57,7 +68,8 @@ export class TodoModel {
   }
 
   /**
-   * Delete a todo
+   * Delete a todo by its ID.
+   * @param {number} id The unique ID of the todo to delete
    */
   deleteTodo(id) {
     this.todos = this.todos.filter(t => t.id !== id);
@@ -67,6 +79,9 @@ export class TodoModel {
 
   /**
    * Update todo text
+   * Ignores empty or whitespace-only strings.
+   * @param {number} id The unique ID of the todo to update
+   * @param {string} newText The new text for the todo
    */
   updateTodo(id, newText) {
     const todo = this.todos.find(t => t.id === id);
@@ -78,7 +93,7 @@ export class TodoModel {
   }
 
   /**
-   * Clear all completed todos
+   * Clear all completed todos from the list.
    */
   clearCompleted() {
     this.todos = this.todos.filter(t => !t.completed);
@@ -87,7 +102,7 @@ export class TodoModel {
   }
 
   /**
-   * Clear all todos
+   * Clear all todos from the list.
    */
   clearAll() {
     this.todos = [];
@@ -96,7 +111,8 @@ export class TodoModel {
   }
 
   /**
-   * Get count of active todos
+   * Get count of active (not completed) todos
+   * @type {number}
    */
   get activeCount() {
     return this.todos.filter(t => !t.completed).length;
@@ -104,13 +120,15 @@ export class TodoModel {
 
   /**
    * Get count of completed todos
+   * @type {number}
    */
   get completedCount() {
     return this.todos.filter(t => t.completed).length;
   }
 
   /**
-   * Save todos to storage
+   * Save todos and next available ID to storage.
+   * @private
    */
   save() {
     this.storage.save('items', this.todos);

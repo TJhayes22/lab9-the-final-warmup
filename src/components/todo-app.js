@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Main TodoApp component.
+ * Coordinates between the TodoModel (data) and UI components (todo-form, todo-list).
+ * Implements core app logic including add, update, toggle, and clear actions.
+ */
+
 import { LitElement, html, css } from 'lit';
 import { TodoModel } from '../models/todo-model.js';
 import { StorageService } from '../services/storage-service.js';
@@ -7,6 +13,7 @@ import './todo-list.js';
 /**
  * TodoApp - Main application component, Controller in MVC pattern
  * Coordinates between Model and View components
+ * @extends {LitElement}
  */
 export class TodoApp extends LitElement {
   static properties = {
@@ -123,47 +130,78 @@ export class TodoApp extends LitElement {
     }
   `;
 
-  
+  /**
+   * Constructor - initializes the TodoApp component, sets up model, storage, and subscriptions
+   * @constructor
+   */
   constructor() {
     super();
     this.storageService = new StorageService();
     this.model = new TodoModel(this.storageService);
     this.todos = this.model.todos;
 
-    // Subscribe to model changes
+    // Subscribe to model changes and update local state
     this.model.subscribe(() => {
       this.todos = [...this.model.todos];
     });
   }
 
+  /**
+   * Handles adding a new todo item from the todo-form component.
+   * @param {CustomEvent<{ text: string }>} e - Custom event containing the todo text.
+   */
   handleAddTodo(e) {
     this.model.addTodo(e.detail.text);
   }
 
+  /**
+   * Handles toggling the completion state of a todo item.
+   * @param {CustomEvent<{ id: number }>} e - Custom event containing the todo ID.
+   */
   handleToggleTodo(e) {
     this.model.toggleComplete(e.detail.id);
   }
 
+  /**
+   * Handles deleting a todo item.
+   * @param {CustomEvent<{ id: number }>} e - Custom event containing the todo ID.
+   */
   handleDeleteTodo(e) {
     this.model.deleteTodo(e.detail.id);
   }
 
+  /**
+   * Handles updating a todo item’s text.
+   * @param {CustomEvent<{ id: number, text: string }>} e - Custom event with updated text and ID.
+   */
   handleUpdateTodo(e) {
     this.model.updateTodo(e.detail.id, e.detail.text);
   }
 
+  /**
+   * Clears all completed todos after user confirmation.
+   */
   handleClearCompleted() {
     if (confirm('Clear all completed todos?')) {
       this.model.clearCompleted();
     }
   }
 
+  /**
+   * Clears all todos after user confirmation.
+   * This action cannot be undone.
+   */
   handleClearAll() {
     if (confirm('Clear ALL todos? This cannot be undone.')) {
       this.model.clearAll();
     }
   }
 
+  /**
+   * Renders the entire TodoApp UI.
+   * Includes stats, form, todo list, and action buttons.
+   * @returns {import('lit').TemplateResult} The rendered HTML template.
+   */
   render() {
     return html`
       <div class="app-container">
@@ -219,4 +257,5 @@ export class TodoApp extends LitElement {
   }
 }
 
+// Define the custom element
 customElements.define('todo-app', TodoApp);

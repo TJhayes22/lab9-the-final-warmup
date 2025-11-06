@@ -1,7 +1,15 @@
+/**
+ * @fileoverview TodoForm component.
+ * Provides an input field and submit button for adding new todos.
+ * Dispatches a custom `add-todo` event when a valid todo is submitted.
+ */
+
 import { LitElement, html, css } from 'lit';
 
 /**
- * TodoForm - Input form for adding new todos
+ * Represents the input form for adding new todo items.
+ * Handles user input and dispatches events to add todos.
+ * @extends {LitElement}
  */
 export class TodoForm extends LitElement {
   static properties = {
@@ -12,6 +20,8 @@ export class TodoForm extends LitElement {
     :host {
       display: block;
       margin-bottom: 20px;
+      --primary-color: #667eea;
+      --primary-color-hover: #5568d3;
     }
 
     form {
@@ -30,12 +40,12 @@ export class TodoForm extends LitElement {
     }
 
     input:focus {
-      border-color: #667eea;
+      border-color: var(--primary-color);
     }
 
     button {
       padding: 12px 24px;
-      background: #667eea;
+      background: var(--primary-color);
       color: white;
       border: none;
       border-radius: 8px;
@@ -46,7 +56,7 @@ export class TodoForm extends LitElement {
     }
 
     button:hover {
-      background: #5568d3;
+      background: var(--primary-color-hover);
     }
 
     button:active {
@@ -59,11 +69,21 @@ export class TodoForm extends LitElement {
     }
   `;
 
+  /**
+   * Creates a new TodoForm instance with an empty input value.
+   * @constructor
+   */
   constructor() {
     super();
     this.inputValue = '';
   }
 
+  /**
+   * Handles the form submission event.
+   * Validates input, dispatches `add-todo` event, and clears the input.
+   * @param {Event} e - The submit event.
+   * @fires TodoForm#add-todo
+   */
   handleSubmit(e) {
     e.preventDefault();
     const text = this.inputValue.trim();
@@ -79,14 +99,23 @@ export class TodoForm extends LitElement {
     }
   }
 
+  /**
+   * Updates the local input value as the user types.
+   * @param {InputEvent} e - The input event triggered when typing in the text field.
+   */
   handleInput(e) {
     this.inputValue = e.target.value;
   }
 
+  /**
+   * Renders the form UI for adding new todos.
+   * @returns {import('lit').TemplateResult} The Lit HTML template for the form.
+   */
   render() {
     return html`
       <form @submit=${this.handleSubmit}>
         <input
+          name="todo-input"
           type="text"
           placeholder="What needs to be done?"
           .value=${this.inputValue}
@@ -102,4 +131,5 @@ export class TodoForm extends LitElement {
   }
 }
 
+// Define the custom element
 customElements.define('todo-form', TodoForm);

@@ -1,8 +1,14 @@
+/**
+ * @fileoverview TodoList component.
+ * Renders a list of todos using TodoItem components.
+ * Handles empty state display and scrollable container.
+ */
 import { LitElement, html, css } from 'lit';
 import './todo-item.js';
 
 /**
  * TodoList - Displays a list of todos
+ * @extends {LitElement}
  */
 export class TodoList extends LitElement {
   static properties = {
@@ -51,11 +57,19 @@ export class TodoList extends LitElement {
     }
   `;
 
+  /**
+   * Creates a new TodoList instance with an empty todo array.
+   * @constructor
+   */
   constructor() {
     super();
     this.todos = [];
   }
 
+  /**
+   * Renders the todo list or empty state.
+   * @returns {import('lit').TemplateResult} The Lit HTML template for the list.
+   */
   render() {
     if (this.todos.length === 0) {
       return html`
@@ -76,4 +90,5 @@ export class TodoList extends LitElement {
   }
 }
 
+// Define the custom element
 customElements.define('todo-list', TodoList);
