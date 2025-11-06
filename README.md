@@ -2,3 +2,12 @@
 - Added CSS variables (in main styles.css)
 - Created a .gitignore file
 - Set up eslint for code formatting
+- Created e2e tests using Playwright
+- Made detailed JSDoc comments (will generate docs with these)
+
+### Isues to fix:
+- Weird visual bug when hovering over todo items in todo list
+    - Solution: removed transformation in todo-item hover, just kept box-shadow when hovering.
+- Weird behavior when marking 
+something as complete and clearing completed tasks (checked but it says 2 are still active)
+    - Solution: used lit function `repeat` to ensure stable DOM identity for each todo item in the todo list, makes sure no checkboxes are "borrowed". Made edit in `todo-list.js` under the `render()` method where individual todos are rendered. 
