@@ -5,7 +5,7 @@ import './todo-form.js';
 import './todo-list.js';
 
 /**
- * TodoApp - Main application component
+ * TodoApp - Main application component, Controller in MVC pattern
  * Coordinates between Model and View components
  */
 export class TodoApp extends LitElement {
@@ -16,6 +16,11 @@ export class TodoApp extends LitElement {
   static styles = css`
     :host {
       display: block;
+      --clearbutton-bg: #ff9800;
+      --clearbutton-bg-hover: #f57c00;
+      --clearall-bg: #f44336;
+      --clearall-bg-hover: #da190b;
+      --stat-color: #3f51b5;
     }
 
     .app-container {
@@ -58,7 +63,7 @@ export class TodoApp extends LitElement {
     .stat-value {
       font-size: 24px;
       font-weight: 700;
-      color: #667eea;
+      color: var(--stat-color);
     }
 
     .stat-label {
@@ -86,21 +91,21 @@ export class TodoApp extends LitElement {
     }
 
     .clear-completed {
-      background: #ff9800;
+      background: var(--clearbutton-bg);
       color: white;
     }
 
     .clear-completed:hover {
-      background: #f57c00;
+      background: var(--clearbutton-bg-hover);
     }
 
     .clear-all {
-      background: #f44336;
+      background: var(--clearall-bg);
       color: white;
     }
 
     .clear-all:hover {
-      background: #da190b;
+      background: var(--clearall-bg-hover);
     }
 
     button:disabled {
@@ -118,6 +123,7 @@ export class TodoApp extends LitElement {
     }
   `;
 
+  
   constructor() {
     super();
     this.storageService = new StorageService();

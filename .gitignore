@@ -1,0 +1,21 @@
+# Windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Node / front-end deps
+node_modules/
+package-lock.json
+yarn.lock
+
+# Build / output
+dist/
+build/
+out/
+
+# Env / logs
+.env
+*.log
+
+# Editor
+.vscode/
