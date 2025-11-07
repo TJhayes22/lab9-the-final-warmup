@@ -11,3 +11,9 @@
 - Weird behavior when marking 
 something as complete and clearing completed tasks (checked but it says 2 are still active)
     - Solution: used lit function `repeat` to ensure stable DOM identity for each todo item in the todo list, makes sure no checkboxes are "borrowed". Made edit in `todo-list.js` under the `render()` method where individual todos are rendered. 
+
+### TODO: 
+- ADR documenting the choice of why one might use Lit or maybe we shouldn't use it!
+- A pipeline that runs tests, docs, linting, etc. with Github actions when you push and deploys to either Cloudflare, Netlify, or other host as you see fit
+- Write good tests: e2e and unit tests
+- Add one new feature: dark mode toggle, ...
