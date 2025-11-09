@@ -44,10 +44,15 @@ test('clear completed removes only checked todos', async ({ page }) => {
   const firstCheckbox = firstTodo.locator('input[type="checkbox"]');
   await firstCheckbox.click();
 
-  // Click "Clear completed"
-  await page.click('button.clear-completed');
+  // Handle the confirmation dialog
+  page.on('dialog', async dialog => {
+    console.log('Dialog appeared:', dialog.message());
+    await dialog.accept();
+  });
 
-  
+  // Click "Clear completed"
+  const clearButton = page.locator('button.clear-completed');
+  await clearButton.click();
 
   // Verify only uncompleted todo remains
   const todos = page.locator('.todo-item');
@@ -62,10 +67,17 @@ test('delete todo removes it from the list', async ({ page }) => {
   await page.fill('input[name="todo-input"]', 'Delete me');
   await page.click('button[type="submit"]');
 
-  const todo = page.locator('.todo-item', { hasText: 'Delete me' });
-  await todo.locator('.delete-button').click();
+  // Set up dialog handler before clicking delete
+  page.on('dialog', async dialog => {
+    console.log('Dialog appeared:', dialog.message());
+    await dialog.accept();
+  });
 
-  await expect(page.locator('.todo-item')).not.toContainText('Delete me');
+  const todo = page.locator('.todo-item').filter({ hasText: 'Delete me' });
+  await todo.locator('.delete-btn').click();
+
+  // Verify that there are no todo items left
+  await expect(page.locator('.todo-item')).toHaveCount(0);
 });
 
 /**
@@ -76,12 +88,35 @@ test('edit todo updates its text', async ({ page }) => {
   await page.click('button[type="submit"]');
 
   const todo = page.locator('.todo-item').filter({ hasText: 'Old text' });
-  await todo.dblclick(); // simulate entering edit mode
-  const input = todo.locator('input.edit');
+  await todo.locator('.edit-btn').click();
+  const input = page.locator('.edit-input');
 
   await input.fill('Updated text');
-  await input.press('Enter');
+  await page.locator('.save-btn').click();
 
   await expect(page.locator('.todo-item')).toContainText('Updated text');
   await expect(page.locator('.todo-item')).not.toContainText('Old text');
+});
+
+/**
+ * Clear all todos
+ */
+test('clear all removes all todos', async ({ page }) => {
+  // Add two todos
+  await page.fill('input[name="todo-input"]', 'Todo 1');
+  await page.click('button[type="submit"]');
+  await page.fill('input[name="todo-input"]', 'Todo 2');
+  await page.click('button[type="submit"]');
+
+  // Set up dialog handler before clicking clear all
+  page.on('dialog', async dialog => {
+    console.log('Dialog appeared:', dialog.message());
+    await dialog.accept();
+  });
+
+  const clearAllButton = page.locator('button.clear-all');
+  await clearAllButton.click();
+
+  // Verify no todos remain
+  await expect(page.locator('.todo-item')).toHaveCount(0);
 });
