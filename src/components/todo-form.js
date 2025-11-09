@@ -185,10 +185,10 @@ export class TodoForm extends LitElement {
           autofocus
         />
         <button 
-          type="submit" 
+          type="button" 
           id="mic-button"
           @click=${this.handleMicClick}
-          titile="Add by voice"
+          title="Add by voice"
         >
           🎤
         </button>
