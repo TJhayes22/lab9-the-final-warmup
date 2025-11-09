@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/todo-app.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/todo-app.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * @fileoverview Main TodoApp component.
  * Coordinates between the TodoModel (data) and UI components (todo-form, todo-list).
  * Implements core app logic including add, update, toggle, and clear actions.
@@ -148,7 +176,7 @@ export class TodoApp extends LitElement {
 
   /**
    * Handles adding a new todo item from the todo-form component.
-   * @param {CustomEvent<{ text: string }>} e - Custom event containing the todo text.
+   * @param {CustomEvent&lt;{ text: string }>} e - Custom event containing the todo text.
    */
   handleAddTodo(e) {
     this.model.addTodo(e.detail.text);
@@ -156,7 +184,7 @@ export class TodoApp extends LitElement {
 
   /**
    * Handles toggling the completion state of a todo item.
-   * @param {CustomEvent<{ id: number }>} e - Custom event containing the todo ID.
+   * @param {CustomEvent&lt;{ id: number }>} e - Custom event containing the todo ID.
    */
   handleToggleTodo(e) {
     this.model.toggleComplete(e.detail.id);
@@ -165,7 +193,7 @@ export class TodoApp extends LitElement {
 
   /**
    * Handles deleting a todo item.
-   * @param {CustomEvent<{ id: number }>} e - Custom event containing the todo ID.
+   * @param {CustomEvent&lt;{ id: number }>} e - Custom event containing the todo ID.
    */
   handleDeleteTodo(e) {
     this.model.deleteTodo(e.detail.id);
@@ -173,7 +201,7 @@ export class TodoApp extends LitElement {
 
   /**
    * Handles updating a todo item’s text.
-   * @param {CustomEvent<{ id: number, text: string }>} e - Custom event with updated text and ID.
+   * @param {CustomEvent&lt;{ id: number, text: string }>} e - Custom event with updated text and ID.
    */
   handleUpdateTodo(e) {
     this.model.updateTodo(e.detail.id, e.detail.text);
@@ -205,54 +233,76 @@ export class TodoApp extends LitElement {
    */
   render() {
     return html`
-      <div class="app-container">
-        <h1>My Tasks</h1>
-        <p class="subtitle">Stay organized and productive</p>
+      &lt;div class="app-container">
+        &lt;h1>My Tasks&lt;/h1>
+        &lt;p class="subtitle">Stay organized and productive&lt;/p>
 
-        <div class="stats">
-          <div class="stat-item">
-            <div class="stat-value">${this.todos.length}</div>
-            <div class="stat-label">Total</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value">${this.model.activeCount}</div>
-            <div class="stat-label">Active</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value">${this.model.completedCount}</div>
-            <div class="stat-label">Completed</div>
-          </div>
-        </div>
+        &lt;div class="stats">
+          &lt;div class="stat-item">
+            &lt;div class="stat-value">${this.todos.length}&lt;/div>
+            &lt;div class="stat-label">Total&lt;/div>
+          &lt;/div>
+          &lt;div class="stat-item">
+            &lt;div class="stat-value">${this.model.activeCount}&lt;/div>
+            &lt;div class="stat-label">Active&lt;/div>
+          &lt;/div>
+          &lt;div class="stat-item">
+            &lt;div class="stat-value">${this.model.completedCount}&lt;/div>
+            &lt;div class="stat-label">Completed&lt;/div>
+          &lt;/div>
+        &lt;/div>
 
-        <todo-form
+        &lt;todo-form
           @add-todo=${this.handleAddTodo}>
-        </todo-form>
+        &lt;/todo-form>
 
-        <todo-list
+        &lt;todo-list
           .todos=${this.todos}
           @toggle-todo=${this.handleToggleTodo}
           @delete-todo=${this.handleDeleteTodo}
           @update-todo=${this.handleUpdateTodo}>
-        </todo-list>
+        &lt;/todo-list>
 
-        <div class="actions">
-          <button
+        &lt;div class="actions">
+          &lt;button
             class="clear-completed"
             @click=${this.handleClearCompleted}
             ?disabled=${this.model.completedCount === 0}>
             Clear Completed
-          </button>
-          <button
+          &lt;/button>
+          &lt;button
             class="clear-all"
             @click=${this.handleClearAll}
             ?disabled=${this.todos.length === 0}>
             Clear All
-          </button>
-        </div>
-      </div>
+          &lt;/button>
+        &lt;/div>
+      &lt;/div>
     `;
   }
 }
 
 // Define the custom element
-customElements.define('todo-app', TodoApp);
+customElements.define('todo-app', TodoApp);</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="StorageService.html">StorageService</a></li><li><a href="TodoApp.html">TodoApp</a></li><li><a href="TodoForm.html">TodoForm</a></li><li><a href="TodoItem.html">TodoItem</a></li><li><a href="TodoList.html">TodoList</a></li><li><a href="TodoModel.html">TodoModel</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Sun Nov 09 2025 00:15:28 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

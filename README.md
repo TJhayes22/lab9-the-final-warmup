@@ -4,6 +4,7 @@
 - Set up eslint for code formatting
 - Created e2e tests using Playwright
 - Made detailed JSDoc comments (will generate docs with these)
+- Speech to text button using built in API
 
 ### Isues to fix:
 - Weird visual bug when hovering over todo items in todo list
