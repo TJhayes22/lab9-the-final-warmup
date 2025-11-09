@@ -1,5 +1,5 @@
 {
-    "name": "worker-name",
+    "name": "lab9-todo-app",
 	"compatibility_date": "2025-11-09",
 	"assets": {
 	    "directory": "./dist"
