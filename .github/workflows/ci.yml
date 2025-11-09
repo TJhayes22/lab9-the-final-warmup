@@ -30,6 +30,8 @@ jobs:
         run: npm run lint --if-present
 
       # Run tests (Playwright)
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
       - name: Run Playwright tests
         run: npx playwright test --reporter=line
 
