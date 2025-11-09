@@ -54,9 +54,8 @@ jobs:
 
       # Deploy to Cloudflare Pages
       - name: Deploy to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+        uses: cloudflare/wrnagler-action@v2
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: lab9-todo-app
-          directory: dist
+          command: pages deploy website/build --project-name=lab9-todo-app
