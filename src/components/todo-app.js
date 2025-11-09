@@ -138,7 +138,7 @@ export class TodoApp extends LitElement {
     super();
     this.storageService = new StorageService();
     this.model = new TodoModel(this.storageService);
-    this.todos = this.model.todos;
+    this.todos = [...this.model.todos];
 
     // Subscribe to model changes and update local state
     this.model.subscribe(() => {
@@ -160,6 +160,7 @@ export class TodoApp extends LitElement {
    */
   handleToggleTodo(e) {
     this.model.toggleComplete(e.detail.id);
+    this.todos = [...this.model.todos];
   }
 
   /**

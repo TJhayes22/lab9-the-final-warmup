@@ -24,7 +24,7 @@
         - checkbox "Toggle todo" [checked] [ref=e25] [cursor=pointer]
         - generic [ref=e26]: Todo A
         - generic [ref=e27]:
-          - button "Edit todo" [ref=e28] [cursor=pointer]: Edit
+          - button "Edit todo" [disabled] [ref=e28] [cursor=pointer]: Edit
           - button "Delete todo" [ref=e29] [cursor=pointer]: Delete
       - generic [ref=e31]:
         - checkbox "Toggle todo" [ref=e32] [cursor=pointer]

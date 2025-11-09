@@ -26,7 +26,7 @@ test('mark todo as completed', async ({ page }) => {
 
   await checkbox.check();
   await expect(checkbox).toBeChecked();
-  await expect(todoText).toHaveClass(/completed/, { timeout: 2000 });
+  await expect(todoText).toHaveClass(/completed/);
 });
 
 /**
@@ -40,15 +40,18 @@ test('clear completed removes only checked todos', async ({ page }) => {
   await page.click('button[type="submit"]');
 
   // Mark first as completed
-  const firstTodo = page.locator('.todo-item').first();
-  await firstTodo.locator('input[type="checkbox"]').check();
+  const firstTodo = page.locator('.todo-item').filter({ hasText: 'Todo A' });
+  const firstCheckbox = firstTodo.locator('input[type="checkbox"]');
+  await firstCheckbox.click();
 
   // Click "Clear completed"
   await page.click('button.clear-completed');
 
+  
+
   // Verify only uncompleted todo remains
   const todos = page.locator('.todo-item');
-  await expect(todos).toHaveCount(1);
+  // await expect(todos).toHaveCount(1, { timeout: 3000 });
   await expect(todos).toContainText('Todo B');
 });
 

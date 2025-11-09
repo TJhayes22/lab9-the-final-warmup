@@ -84,7 +84,7 @@ export class TodoList extends LitElement {
     return html`
       <div class="list-container">
         ${repeat(this.todos, todo => todo.id, todo => html`
-          <todo-item .todo=${todo}></todo-item>
+          <todo-item .todo=${{ ...todo }}></todo-item>
         `)}
       </div>
     `;
