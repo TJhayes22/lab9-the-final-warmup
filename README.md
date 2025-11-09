@@ -17,3 +17,8 @@ something as complete and clearing completed tasks (checked but it says 2 are st
 - A pipeline that runs tests, docs, linting, etc. with Github actions when you push and deploys to either Cloudflare, Netlify, or other host as you see fit
 - Write good tests: e2e and unit tests
 - Add one new feature: dark mode toggle, ...
+
+
+### Isssues:
+- Some playwright tests were not working because the dialog prompt would pop up 
+asking user if they are sure they want to clear completed todos, but I did not handle that in the playwright test.

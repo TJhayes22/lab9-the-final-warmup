@@ -249,10 +249,6 @@ export class TodoApp extends LitElement {
             Clear All
           </button>
         </div>
-
-        <div class="footer">
-          Lab 9: The final battle!
-        </div>
       </div>
     `;
   }

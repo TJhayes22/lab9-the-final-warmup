@@ -22,6 +22,8 @@ export class TodoForm extends LitElement {
       margin-bottom: 20px;
       --primary-color: #667eea;
       --primary-color-hover: #5568d3;
+      --mic-button-bg: #f0f0f0;
+      --mic-button-bg-hover: #e0e0e0;
     }
 
     form {
@@ -67,6 +69,18 @@ export class TodoForm extends LitElement {
       background: #ccc;
       cursor: not-allowed;
     }
+
+    #mic-button {
+    background: var(--mic-button-bg);
+    border-radius: 50%;
+    padding: 8px 10px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  #mic-button:hover {
+    background: var(--mic-button-bg-hover);
+  }
   `;
 
   /**
@@ -76,6 +90,36 @@ export class TodoForm extends LitElement {
   constructor() {
     super();
     this.inputValue = '';
+    this.listening = false;
+    this.recognition = null;
+  }
+
+  /**
+   * Initializes speech recognition if supported by the browser.
+   * Sets up event listeners for handling speech results and end events.
+   */
+  firstUpdated() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      console.warn("Speech recognition not supported in this browser.");
+      return;
+    }
+
+    this.recognition = new SpeechRecognition();
+    this.recognition.lang = 'en-US';
+    this.recognition.continuous = false;
+    this.recognition.interimResults = false;
+
+    this.recognition.addEventListener('result', (event) => {
+      const transcript = event.results[0][0].transcript.trim();
+      this.inputValue = transcript;
+      this.requestUpdate();
+    });
+
+    this.recognition.addEventListener('end', () => {
+      this.listening = false;
+      this.requestUpdate();
+    });
   }
 
   /**
@@ -108,6 +152,23 @@ export class TodoForm extends LitElement {
   }
 
   /**
+   * Handles the microphone button click to start/stop speech recognition.
+   * @param {MouseEvent} e - The click event on the microphone button.
+   */
+  handleMicClick(e) {
+    e.preventDefault();
+    if (!this.recognition) return;
+
+    if (this.listening) {
+      this.recognition.stop();
+      this.listening = false;
+    } else {
+      this.recognition.start();
+      this.listening = true;
+    }
+  }
+
+  /**
    * Renders the form UI for adding new todos.
    * @returns {import('lit').TemplateResult} The Lit HTML template for the form.
    */
@@ -123,6 +184,14 @@ export class TodoForm extends LitElement {
           aria-label="New todo"
           autofocus
         />
+        <button 
+          type="submit" 
+          id="mic-button"
+          @click=${this.handleMicClick}
+          titile="Add by voice"
+        >
+          🎤
+        </button>
         <button type="submit" ?disabled=${!this.inputValue.trim()}>
           Add
         </button>
