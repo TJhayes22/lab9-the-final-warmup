@@ -150,3 +150,7 @@ npm run dev
 - Use "Clear all" to remove all todos
 - Edit a todo inline by clicking the edit icon
 - Delete todos with the delete button
+
+---
+## Author
+Tyler Hayes
